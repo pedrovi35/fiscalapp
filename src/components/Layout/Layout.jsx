@@ -23,6 +23,8 @@ const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: BarChart3 },
   { name: 'Calendário', href: '/calendar', icon: Calendar },
   { name: 'Obrigações', href: '/obrigacoes', icon: List },
+  { name: 'Impostos', href: '/impostos', icon: Building2 },
+  { name: 'Parcelamentos', href: '/parcelamentos', icon: TrendingUp },
   { name: 'Clientes', href: '/clientes', icon: Building2 },
   { name: 'Responsáveis', href: '/responsaveis', icon: Users },
   { name: 'Histórico', href: '/historico', icon: History },
