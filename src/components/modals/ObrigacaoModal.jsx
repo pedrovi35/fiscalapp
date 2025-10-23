@@ -78,13 +78,13 @@ export default function ObrigacaoModal({ open, onOpenChange }) {
             className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto"
           >
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+              <CardHeader className="flex flex-row items-center justify-between gradient-primary text-white space-y-0 pb-4">
                 <div>
                   <CardTitle className="flex items-center gap-2">
                     <FileText className="h-5 w-5" />
                     Nova Obrigação
                   </CardTitle>
-                  <CardDescription>
+                  <CardDescription className="text-white/80">
                     Preencha os dados da nova obrigação fiscal
                   </CardDescription>
                 </div>
@@ -92,6 +92,7 @@ export default function ObrigacaoModal({ open, onOpenChange }) {
                   variant="ghost"
                   size="sm"
                   onClick={handleClose}
+                  className="text-white hover:bg-white/20"
                 >
                   <X className="h-4 w-4" />
                 </Button>

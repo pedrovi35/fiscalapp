@@ -4,65 +4,78 @@
 
 @layer base {
   :root {
-    /* Azul Marinho como cor principal */
-    --background: 0 0% 100%;
-    --foreground: 220 13% 18%;
-    --card: 0 0% 100%;
-    --card-foreground: 220 13% 18%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 13% 18%;
-    --primary: 220 100% 25%; /* Azul marinho escuro */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 220 25% 95%; /* Azul muito claro */
-    --secondary-foreground: 220 13% 18%;
-    --muted: 220 15% 92%;
-    --muted-foreground: 220 9% 46%;
-    --accent: 220 30% 88%; /* Azul claro para acentos */
-    --accent-foreground: 220 13% 18%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 220 100% 25%;
+    /* Modo Claro - Esquema Profissional */
+    --background: 0 0% 100%; /* #FFFFFF - Fundo Principal */
+    --foreground: 30 5% 20%; /* #37352F - Texto Principal */
+    --card: 30 20% 97%; /* #F7F6F3 - Fundo Secundário */
+    --card-foreground: 30 5% 20%; /* #37352F - Texto Principal */
+    --popover: 0 0% 100%; /* #FFFFFF - Fundo Principal */
+    --popover-foreground: 30 5% 20%; /* #37352F - Texto Principal */
+    --primary: 215 100% 60%; /* #4584E6 - Azul */
+    --primary-foreground: 0 0% 100%; /* Branco para contraste */
+    --secondary: 30 20% 97%; /* #F7F6F3 - Fundo Secundário */
+    --secondary-foreground: 30 5% 20%; /* #37352F - Texto Principal */
+    --muted: 30 20% 97%; /* #F7F6F3 - Fundo Secundário */
+    --muted-foreground: 30 2% 48%; /* #787774 - Texto Secundário */
+    --accent: 30 20% 97%; /* #F7F6F3 - Fundo Secundário */
+    --accent-foreground: 30 5% 20%; /* #37352F - Texto Principal */
+    --destructive: 5 70% 60%; /* #E16B5C - Vermelho */
+    --destructive-foreground: 0 0% 100%; /* Branco para contraste */
+    --border: 30 10% 90%; /* #E8E5DE - Borda/Divisor */
+    --input: 30 10% 90%; /* #E8E5DE - Borda/Divisor */
+    --ring: 215 100% 60%; /* #4584E6 - Azul */
     --radius: 0.75rem;
     
-    /* Cores adicionais para o esquema */
-    --success: 142 76% 36%;
+    /* Cores específicas do esquema */
+    --success: 150 50% 50%; /* #4DAD83 - Verde */
     --success-foreground: 0 0% 100%;
-    --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 100%;
-    --info: 199 89% 48%;
+    --warning: 45 90% 65%; /* #F5D061 - Amarelo */
+    --warning-foreground: 30 5% 20%;
+    --info: 215 100% 60%; /* #4584E6 - Azul */
     --info-foreground: 0 0% 100%;
+    --orange: 25 80% 60%; /* #F2994A - Laranja */
+    --orange-foreground: 0 0% 100%;
+    --purple: 300 30% 55%; /* #9B6B9D - Roxo */
+    --purple-foreground: 0 0% 100%;
+    --pink: 340 40% 55%; /* #C05C7E - Rosa */
+    --pink-foreground: 0 0% 100%;
   }
 
   .dark {
-    --background: 220 13% 9%; /* Fundo escuro azulado */
-    --foreground: 220 9% 95%;
-    --card: 220 13% 9%;
-    --card-foreground: 220 9% 95%;
-    --popover: 220 13% 9%;
-    --popover-foreground: 220 9% 95%;
-    --primary: 220 100% 60%; /* Azul marinho mais claro para dark mode */
-    --primary-foreground: 220 13% 9%;
-    --secondary: 220 15% 20%;
-    --secondary-foreground: 220 9% 95%;
-    --muted: 220 15% 20%;
-    --muted-foreground: 220 5% 65%;
-    --accent: 220 20% 25%;
-    --accent-foreground: 220 9% 95%;
-    --destructive: 0 62% 50%;
-    --destructive-foreground: 220 9% 95%;
-    --border: 220 15% 20%;
-    --input: 220 15% 20%;
-    --ring: 220 100% 60%;
+    /* Modo Escuro - Esquema Profissional */
+    --background: 0 0% 10%; /* #191919 - Fundo Principal */
+    --foreground: 0 0% 83%; /* #D4D4D4 - Texto Principal */
+    --card: 0 0% 12%; /* #202020 - Fundo Secundário */
+    --card-foreground: 0 0% 83%; /* #D4D4D4 - Texto Principal */
+    --popover: 0 0% 12%; /* #202020 - Fundo Secundário */
+    --popover-foreground: 0 0% 83%; /* #D4D4D4 - Texto Principal */
+    --primary: 200 60% 60%; /* #529CCA - Azul */
+    --primary-foreground: 0 0% 10%; /* #191919 - Fundo Principal */
+    --secondary: 0 0% 12%; /* #202020 - Fundo Secundário */
+    --secondary-foreground: 0 0% 83%; /* #D4D4D4 - Texto Principal */
+    --muted: 0 0% 12%; /* #202020 - Fundo Secundário */
+    --muted-foreground: 0 0% 61%; /* #9B9B9B - Texto Secundário */
+    --accent: 0 0% 12%; /* #202020 - Fundo Secundário */
+    --accent-foreground: 0 0% 83%; /* #D4D4D4 - Texto Principal */
+    --destructive: 5 60% 55%; /* #BE524B - Vermelho */
+    --destructive-foreground: 0 0% 83%; /* #D4D4D4 - Texto Principal */
+    --border: 0 0% 18%; /* #2E2E2E - Borda/Divisor */
+    --input: 0 0% 18%; /* #2E2E2E - Borda/Divisor */
+    --ring: 200 60% 60%; /* #529CCA - Azul */
     
-    /* Cores adicionais para dark mode */
-    --success: 142 70% 45%;
-    --success-foreground: 220 13% 9%;
-    --warning: 38 85% 55%;
-    --warning-foreground: 220 13% 9%;
-    --info: 199 85% 55%;
-    --info-foreground: 220 13% 9%;
+    /* Cores específicas do esquema dark */
+    --success: 120 40% 50%; /* #58A85C - Verde */
+    --success-foreground: 0 0% 10%;
+    --warning: 40 60% 55%; /* #CFA551 - Amarelo */
+    --warning-foreground: 0 0% 10%;
+    --info: 200 60% 60%; /* #529CCA - Azul */
+    --info-foreground: 0 0% 10%;
+    --orange: 25 60% 50%; /* #CB7B37 - Laranja */
+    --orange-foreground: 0 0% 10%;
+    --purple: 280 40% 55%; /* #865DBB - Roxo */
+    --purple-foreground: 0 0% 10%;
+    --pink: 340 40% 50%; /* #BA4A78 - Rosa */
+    --pink-foreground: 0 0% 10%;
   }
 }
 
@@ -158,24 +171,44 @@
   
   /* Classes para as novas cores */
   .badge-success {
-    @apply border-transparent bg-green-600 text-white hover:bg-green-700;
+    @apply border-transparent bg-green-500 text-white hover:bg-green-600;
   }
   
   .badge-warning {
-    @apply border-transparent bg-amber-500 text-white hover:bg-amber-600;
+    @apply border-transparent bg-yellow-500 text-gray-900 hover:bg-yellow-600;
   }
   
   .badge-info {
-    @apply border-transparent bg-cyan-500 text-white hover:bg-cyan-600;
+    @apply border-transparent bg-blue-500 text-white hover:bg-blue-600;
   }
   
-  /* Gradientes azul marinho */
-  .gradient-navy {
-    background: linear-gradient(135deg, hsl(220, 100%, 25%) 0%, hsl(220, 100%, 35%) 100%);
+  .badge-orange {
+    @apply border-transparent bg-orange-500 text-white hover:bg-orange-600;
   }
   
-  .gradient-navy-light {
-    background: linear-gradient(135deg, hsl(220, 100%, 60%) 0%, hsl(220, 100%, 70%) 100%);
+  .badge-purple {
+    @apply border-transparent bg-purple-500 text-white hover:bg-purple-600;
+  }
+  
+  .badge-pink {
+    @apply border-transparent bg-pink-500 text-white hover:bg-pink-600;
+  }
+  
+  /* Gradientes profissionais */
+  .gradient-primary {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary)) 100%);
+  }
+  
+  .gradient-success {
+    background: linear-gradient(135deg, hsl(var(--success)) 0%, hsl(var(--success)) 100%);
+  }
+  
+  .gradient-warning {
+    background: linear-gradient(135deg, hsl(var(--warning)) 0%, hsl(var(--warning)) 100%);
+  }
+  
+  .gradient-info {
+    background: linear-gradient(135deg, hsl(var(--info)) 0%, hsl(var(--info)) 100%);
   }
   
   /* Efeitos de hover melhorados */
@@ -185,6 +218,18 @@
   
   .hover-glow {
     @apply transition-all duration-200 hover:shadow-lg hover:shadow-primary/25;
+  }
+  
+  .hover-glow-success {
+    @apply transition-all duration-200 hover:shadow-lg hover:shadow-green-500/25;
+  }
+  
+  .hover-glow-warning {
+    @apply transition-all duration-200 hover:shadow-lg hover:shadow-yellow-500/25;
+  }
+  
+  .hover-glow-error {
+    @apply transition-all duration-200 hover:shadow-lg hover:shadow-red-500/25;
   }
 }
 

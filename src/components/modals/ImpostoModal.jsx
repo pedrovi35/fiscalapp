@@ -71,7 +71,7 @@ export default function ImpostoModal({ open, onOpenChange, imposto, onSave }) {
             className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto"
           >
             <Card className="border-0 shadow-2xl">
-              <CardHeader className="gradient-navy text-white">
+              <CardHeader className="gradient-primary text-white">
                 <div className="flex items-center justify-between">
                   <div>
                     <CardTitle className="text-xl">

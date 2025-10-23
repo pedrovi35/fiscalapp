@@ -176,7 +176,7 @@ export default function Impostos() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold tracking-tight text-primary">
             Impostos
           </h1>
           <p className="text-muted-foreground mt-1">
@@ -190,7 +190,7 @@ export default function Impostos() {
           </Button>
           <Button 
             onClick={() => setModalOpen(true)}
-            className="gradient-navy hover:shadow-lg hover:shadow-primary/25 transition-all duration-200"
+            className="gradient-primary hover:shadow-lg hover:shadow-primary/25 transition-all duration-200"
           >
             <Plus className="h-4 w-4 mr-2" />
             Novo Imposto

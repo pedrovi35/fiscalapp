@@ -81,7 +81,7 @@ export default function ParcelamentoModal({ open, onOpenChange, parcelamento, on
             className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto"
           >
             <Card className="border-0 shadow-2xl">
-              <CardHeader className="gradient-navy text-white">
+              <CardHeader className="gradient-primary text-white">
                 <div className="flex items-center justify-between">
                   <div>
                     <CardTitle className="text-xl">
