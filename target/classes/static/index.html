@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Fiscal - Gerenciamento de Prazos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --cor-imposto: #28a745;
+            --cor-parcelamento: #ffc107;
+            --cor-declaracao: #17a2b8;
+            --cor-documento: #6f42c1;
+            --cor-outros: #6c757d;
+            --cor-vencida: #dc3545;
+            --cor-critica: #fd7e14;
+            --cor-urgente: #ffc107;
+            --cor-atencao: #20c997;
+            --cor-normal: #6c757d;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: var(--cor-imposto) !important;
+        }
+
+        .sidebar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.8);
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin: 4px 8px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            color: white;
+            background-color: rgba(255,255,255,0.1);
+            transform: translateX(5px);
+        }
+
+        .main-content {
+            padding: 20px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-vencida { background-color: var(--cor-vencida); color: white; }
+        .status-critica { background-color: var(--cor-critica); color: white; }
+        .status-urgente { background-color: var(--cor-urgente); color: black; }
+        .status-atencao { background-color: var(--cor-atencao); color: white; }
+        .status-normal { background-color: var(--cor-normal); color: white; }
+
+        .tipo-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .tipo-imposto { background-color: var(--cor-imposto); }
+        .tipo-parcelamento { background-color: var(--cor-parcelamento); color: black; }
+        .tipo-declaracao { background-color: var(--cor-declaracao); }
+        .tipo-documento { background-color: var(--cor-documento); }
+        .tipo-outros { background-color: var(--cor-outros); }
+
+        .calendar-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .fc-event {
+            border-radius: 6px !important;
+            border: none !important;
+            padding: 2px 6px !important;
+            font-size: 0.8rem !important;
+        }
+
+        .fc-event-title {
+            font-weight: 600 !important;
+        }
+
+        .notification-badge {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            max-width: 400px;
+        }
+
+        .filter-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        .stats-card {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .stats-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                min-height: auto;
+            }
+            
+            .main-content {
+                padding: 10px;
+            }
+            
+            .notification-badge {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+        }
+
+        /* Acessibilidade */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .high-contrast {
+            filter: contrast(150%);
+        }
+
+        /* Animações */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-calendar-check me-2"></i>
+                Sistema Fiscal
+            </a>
+            <div class="navbar-nav ms-auto">
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user-circle me-1"></i>
+                        Usuário
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#" onclick="toggleHighContrast()">
+                            <i class="fas fa-adjust me-2"></i>Alto Contraste
+                        </a></li>
+                        <li><a class="dropdown-item" href="#" onclick="toggleNotifications()">
+                            <i class="fas fa-bell me-2"></i>Notificações
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 sidebar">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" onclick="showDashboard()">
+                                <i class="fas fa-tachometer-alt me-2"></i>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showCalendar()">
+                                <i class="fas fa-calendar-alt me-2"></i>
+                                Calendário
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showObrigacoes()">
+                                <i class="fas fa-list me-2"></i>
+                                Obrigações
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showClientes()">
+                                <i class="fas fa-building me-2"></i>
+                                Clientes
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showResponsaveis()">
+                                <i class="fas fa-users me-2"></i>
+                                Responsáveis
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showHistorico()">
+                                <i class="fas fa-history me-2"></i>
+                                Histórico
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 col-lg-10 main-content">
+                <!-- Dashboard -->
+                <div id="dashboard" class="content-section">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2><i class="fas fa-tachometer-alt me-2"></i>Dashboard</h2>
+                        <button class="btn btn-primary" onclick="showNovaObrigacao()">
+                            <i class="fas fa-plus me-2"></i>Nova Obrigação
+                        </button>
+                    </div>
+
+                    <!-- Stats Cards -->
+                    <div class="row mb-4">
+                        <div class="col-md-3 mb-3">
+                            <div class="card stats-card">
+                                <div class="stats-number text-danger" id="totalVencidas">0</div>
+                                <div class="stats-label">Vencidas</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card stats-card">
+                                <div class="stats-number text-warning" id="totalCriticas">0</div>
+                                <div class="stats-label">Críticas (≤3 dias)</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card stats-card">
+                                <div class="stats-number text-info" id="totalUrgentes">0</div>
+                                <div class="stats-label">Urgentes (≤7 dias)</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card stats-card">
+                                <div class="stats-number text-success" id="totalNormais">0</div>
+                                <div class="stats-label">Normais</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Próximas Vencimentos -->
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Próximas Vencimentos</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="proximasVencimentos">
+                                        <div class="text-center text-muted">
+                                            <i class="fas fa-spinner fa-spin fa-2x mb-3"></i>
+                                            <p>Carregando...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0"><i class="fas fa-chart-pie me-2"></i>Resumo por Tipo</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="resumoTipos">
+                                        <div class="text-center text-muted">
+                                            <i class="fas fa-spinner fa-spin fa-2x mb-3"></i>
+                                            <p>Carregando...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calendário -->
+                <div id="calendar" class="content-section" style="display: none;">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2><i class="fas fa-calendar-alt me-2"></i>Calendário</h2>
+                        <div>
+                            <button class="btn btn-outline-primary me-2" onclick="toggleFiltros()">
+                                <i class="fas fa-filter me-2"></i>Filtros
+                            </button>
+                            <button class="btn btn-primary" onclick="showNovaObrigacao()">
+                                <i class="fas fa-plus me-2"></i>Nova Obrigação
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Filtros -->
+                    <div id="filtrosPanel" class="filter-panel" style="display: none;">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="form-label">Cliente</label>
+                                <select class="form-select" id="filtroCliente">
+                                    <option value="">Todos os clientes</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Responsável</label>
+                                <select class="form-select" id="filtroResponsavel">
+                                    <option value="">Todos os responsáveis</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Tipo</label>
+                                <select class="form-select" id="filtroTipo">
+                                    <option value="">Todos os tipos</option>
+                                    <option value="IMPOSTO">Imposto</option>
+                                    <option value="PARCELAMENTO">Parcelamento</option>
+                                    <option value="DECLARACAO">Declaração</option>
+                                    <option value="DOCUMENTO">Documento</option>
+                                    <option value="OUTROS">Outros</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Status</label>
+                                <select class="form-select" id="filtroStatus">
+                                    <option value="">Todos os status</option>
+                                    <option value="false">Pendentes</option>
+                                    <option value="true">Concluídas</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <button class="btn btn-primary me-2" onclick="aplicarFiltros()">
+                                    <i class="fas fa-search me-2"></i>Aplicar Filtros
+                                </button>
+                                <button class="btn btn-outline-secondary" onclick="limparFiltros()">
+                                    <i class="fas fa-times me-2"></i>Limpar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Calendário -->
+                    <div class="calendar-container">
+                        <div id="calendarEl"></div>
+                    </div>
+                </div>
+
+                <!-- Outras seções serão implementadas aqui -->
+                <div id="obrigacoes" class="content-section" style="display: none;">
+                    <h2><i class="fas fa-list me-2"></i>Obrigações</h2>
+                    <p>Lista de obrigações será implementada aqui.</p>
+                </div>
+
+                <div id="clientes" class="content-section" style="display: none;">
+                    <h2><i class="fas fa-building me-2"></i>Clientes</h2>
+                    <p>Gestão de clientes será implementada aqui.</p>
+                </div>
+
+                <div id="responsaveis" class="content-section" style="display: none;">
+                    <h2><i class="fas fa-users me-2"></i>Responsáveis</h2>
+                    <p>Gestão de responsáveis será implementada aqui.</p>
+                </div>
+
+                <div id="historico" class="content-section" style="display: none;">
+                    <h2><i class="fas fa-history me-2"></i>Histórico</h2>
+                    <p>Histórico de alterações será implementado aqui.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nova Obrigação -->
+    <div class="modal fade" id="modalNovaObrigacao" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-plus me-2"></i>Nova Obrigação</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formNovaObrigacao">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Nome da Obrigação *</label>
+                                    <input type="text" class="form-control" id="nomeObrigacao" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Tipo *</label>
+                                    <select class="form-select" id="tipoObrigacao" required>
+                                        <option value="">Selecione o tipo</option>
+                                        <option value="IMPOSTO">Imposto</option>
+                                        <option value="PARCELAMENTO">Parcelamento</option>
+                                        <option value="DECLARACAO">Declaração</option>
+                                        <option value="DOCUMENTO">Documento</option>
+                                        <option value="OUTROS">Outros</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Descrição</label>
+                            <textarea class="form-control" id="descricaoObrigacao" rows="3"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Cliente</label>
+                                    <select class="form-select" id="clienteObrigacao">
+                                        <option value="">Selecione um cliente</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Responsável</label>
+                                    <select class="form-select" id="responsavelObrigacao">
+                                        <option value="">Selecione um responsável</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Data de Vencimento *</label>
+                                    <input type="date" class="form-control" id="dataVencimento" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Recorrência</label>
+                                    <select class="form-select" id="tipoRecorrencia">
+                                        <option value="UNICA">Única</option>
+                                        <option value="MENSAL">Mensal</option>
+                                        <option value="TRIMESTRAL">Trimestral</option>
+                                        <option value="SEMESTRAL">Semestral</option>
+                                        <option value="ANUAL">Anual</option>
+                                        <option value="CUSTOMIZADA">Customizada</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Dia do Mês (para recorrências)</label>
+                                    <input type="number" class="form-control" id="diaMesRecorrencia" min="1" max="31">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Dias de Recorrência (para customizada)</label>
+                                    <input type="number" class="form-control" id="diasRecorrencia" min="1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="ajustarFinaisSemana" checked>
+                                    <label class="form-check-label" for="ajustarFinaisSemana">
+                                        Ajustar fins de semana
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="ajustarFeriados" checked>
+                                    <label class="form-check-label" for="ajustarFeriados">
+                                        Ajustar feriados
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="salvarObrigacao()">
+                        <i class="fas fa-save me-2"></i>Salvar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notificações -->
+    <div id="notifications" class="notification-badge"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/locales/pt-br.global.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
