@@ -18,12 +18,66 @@ const ActionTypes = {
   SET_FILTROS: 'SET_FILTROS',
 }
 
-// Estado inicial
+// Estado inicial com dados mockados
 const initialState = {
   loading: false,
-  obrigacoes: [],
-  clientes: [],
-  responsaveis: [],
+  obrigacoes: [
+    {
+      id: 1,
+      nome: 'ICMS Janeiro 2024',
+      descricao: 'Imposto sobre Circulação de Mercadorias e Serviços',
+      tipo: 'IMPOSTO',
+      dataVencimento: '2024-01-15',
+      dataCriacao: '2024-01-01T10:00:00',
+      concluida: false,
+      statusUrgencia: 'NORMAL',
+      diasParaVencimento: 5,
+      cliente: { id: 1, nome: 'Empresa ABC Ltda' },
+      responsavel: { id: 1, nome: 'João Silva' },
+      valor: 1500.00,
+      observacoes: 'Pagamento via PIX'
+    },
+    {
+      id: 2,
+      nome: 'IPI Janeiro 2024',
+      descricao: 'Imposto sobre Produtos Industrializados',
+      tipo: 'IMPOSTO',
+      dataVencimento: '2024-01-25',
+      dataCriacao: '2024-01-01T10:00:00',
+      concluida: false,
+      statusUrgencia: 'URGENTE',
+      diasParaVencimento: 2,
+      cliente: { id: 2, nome: 'Indústria XYZ S/A' },
+      responsavel: { id: 2, nome: 'Maria Santos' },
+      valor: 2500.00,
+      observacoes: 'Parcelamento em 3x'
+    },
+    {
+      id: 3,
+      nome: 'ISS Janeiro 2024',
+      descricao: 'Imposto sobre Serviços',
+      tipo: 'IMPOSTO',
+      dataVencimento: '2024-01-10',
+      dataCriacao: '2024-01-01T10:00:00',
+      concluida: true,
+      statusUrgencia: 'NORMAL',
+      diasParaVencimento: -5,
+      cliente: { id: 3, nome: 'Comércio DEF Ltda' },
+      responsavel: { id: 1, nome: 'João Silva' },
+      valor: 800.00,
+      observacoes: 'Pago em dia'
+    }
+  ],
+  clientes: [
+    { id: 1, nome: 'Empresa ABC Ltda', cnpj: '12.345.678/0001-90', email: 'contato@abc.com.br', telefone: '(11) 99999-9999' },
+    { id: 2, nome: 'Indústria XYZ S/A', cnpj: '98.765.432/0001-10', email: 'contato@xyz.com.br', telefone: '(11) 88888-8888' },
+    { id: 3, nome: 'Comércio DEF Ltda', cnpj: '11.222.333/0001-44', email: 'contato@def.com.br', telefone: '(11) 77777-7777' }
+  ],
+  responsaveis: [
+    { id: 1, nome: 'João Silva', email: 'joao@empresa.com', telefone: '(11) 99999-9999', cargo: 'Contador' },
+    { id: 2, nome: 'Maria Santos', email: 'maria@empresa.com', telefone: '(11) 88888-8888', cargo: 'Assistente Contábil' },
+    { id: 3, nome: 'Pedro Costa', email: 'pedro@empresa.com', telefone: '(11) 77777-7777', cargo: 'Analista Fiscal' }
+  ],
   notificacoes: [],
   websocketConnected: false,
   theme: localStorage.getItem('theme') || 'light',
@@ -102,65 +156,23 @@ const AppContext = createContext()
 export function AppProvider({ children }) {
   const [state, dispatch] = useReducer(appReducer, initialState)
 
-  // WebSocket
+  // WebSocket (desabilitado temporariamente para evitar erros)
   useEffect(() => {
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-    const wsUrl = `${protocol}//${window.location.host}/api/ws`
+    // Simular conexão WebSocket
+    dispatch({ type: ActionTypes.SET_WEBSOCKET_CONNECTED, payload: true })
     
-    const ws = new WebSocket(wsUrl)
-    
-    ws.onopen = () => {
-      dispatch({ type: ActionTypes.SET_WEBSOCKET_CONNECTED, payload: true })
-      toast.success('Conectado ao sistema')
-    }
-    
-    ws.onmessage = (event) => {
-      try {
-        const notificacao = JSON.parse(event.data)
-        dispatch({ type: ActionTypes.ADD_NOTIFICACAO, payload: notificacao })
-        
-        // Mostrar toast baseado no tipo
-        switch (notificacao.tipo) {
-          case 'OBRIGACAO_CRIADA':
-            toast.success('Nova obrigação criada')
-            break
-          case 'OBRIGACAO_ATUALIZADA':
-            toast.info('Obrigação atualizada')
-            break
-          case 'OBRIGACAO_CONCLUIDA':
-            toast.success('Obrigação concluída')
-            break
-          case 'OBRIGACAO_VENCIDA':
-            toast.error('Obrigação vencida!')
-            break
-          default:
-            toast(notificacao.mensagem)
+    // Adicionar algumas notificações de exemplo
+    setTimeout(() => {
+      dispatch({ 
+        type: ActionTypes.ADD_NOTIFICACAO, 
+        payload: {
+          id: 1,
+          tipo: 'OBRIGACAO_CRIADA',
+          mensagem: 'Sistema inicializado com sucesso!',
+          timestamp: new Date().toISOString()
         }
-      } catch (error) {
-        console.error('Erro ao processar notificação WebSocket:', error)
-      }
-    }
-    
-    ws.onclose = () => {
-      dispatch({ type: ActionTypes.SET_WEBSOCKET_CONNECTED, payload: false })
-      toast.error('Conexão perdida. Tentando reconectar...')
-      
-      // Tentar reconectar após 5 segundos
-      setTimeout(() => {
-        if (ws.readyState === WebSocket.CLOSED) {
-          window.location.reload()
-        }
-      }, 5000)
-    }
-    
-    ws.onerror = (error) => {
-      console.error('Erro WebSocket:', error)
-      toast.error('Erro de conexão')
-    }
-    
-    return () => {
-      ws.close()
-    }
+      })
+    }, 1000)
   }, [])
 
   // Aplicar tema

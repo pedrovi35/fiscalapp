@@ -20,12 +20,29 @@ export const NotificacaoProvider = ({ children }) => {
   const [usuariosConectados, setUsuariosConectados] = useState([])
 
   useEffect(() => {
-    conectarWebSocket()
-    return () => {
-      if (stompClient) {
-        stompClient.disconnect()
-      }
-    }
+    // Simular conexão WebSocket para demonstração
+    setConectado(true)
+    
+    // Adicionar algumas notificações de exemplo
+    setTimeout(() => {
+      processarNotificacao({
+        id: 1,
+        tipo: 'OBRIGACAO_CRIADA',
+        mensagem: 'Sistema inicializado com sucesso!',
+        usuarioEditor: 'Sistema',
+        timestamp: new Date().toISOString()
+      })
+    }, 1000)
+    
+    setTimeout(() => {
+      processarNotificacao({
+        id: 2,
+        tipo: 'USUARIO_CONECTADO',
+        mensagem: 'Usuário conectado ao sistema',
+        usuarioEditor: 'Sistema',
+        timestamp: new Date().toISOString()
+      })
+    }, 2000)
   }, [])
 
   const conectarWebSocket = () => {

@@ -14,6 +14,8 @@ import { useObrigacoes, useEstatisticas } from '../hooks/useApi'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { Badge } from '../components/ui/Badge'
+import { LoadingSpinner, LoadingGrid } from '../components/ui/Loading'
+import { EmptyState } from '../components/ui/EmptyState'
 import { utils } from '../services/api'
 import ObrigacaoModal from '../components/modals/ObrigacaoModal'
 import StatsCard from '../components/dashboard/StatsCard'
@@ -68,8 +70,33 @@ export default function Dashboard() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      <div className="space-y-6">
+        {/* Header Loading */}
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="h-8 w-48 bg-gray-200 dark:bg-gray-700 rounded animate-pulse mb-2"></div>
+            <div className="h-4 w-64 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="h-9 w-20 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+            <div className="h-9 w-32 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+          </div>
+        </div>
+
+        {/* Stats Loading */}
+        <LoadingGrid count={4} />
+
+        {/* Content Loading */}
+        <div className="grid gap-6 lg:grid-cols-2">
+          <div className="space-y-4">
+            <div className="h-6 w-32 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+            <LoadingGrid count={2} />
+          </div>
+          <div className="space-y-4">
+            <div className="h-6 w-32 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
+            <LoadingGrid count={2} />
+          </div>
+        </div>
       </div>
     )
   }
