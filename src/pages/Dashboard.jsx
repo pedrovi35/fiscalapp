@@ -35,22 +35,25 @@ export default function Dashboard() {
       color: 'text-red-500',
       bgColor: 'bg-red-50 dark:bg-red-950',
       description: 'Obrigações em atraso',
+      gradient: 'from-red-500 to-red-600'
     },
     {
       title: 'Críticas',
       value: estatisticas.criticas,
       icon: Clock,
-      color: 'text-orange-500',
-      bgColor: 'bg-orange-50 dark:bg-orange-950',
+      color: 'text-amber-500',
+      bgColor: 'bg-amber-50 dark:bg-amber-950',
       description: '≤ 3 dias para vencer',
+      gradient: 'from-amber-500 to-orange-500'
     },
     {
       title: 'Urgentes',
       value: estatisticas.urgentes,
       icon: TrendingUp,
-      color: 'text-yellow-500',
-      bgColor: 'bg-yellow-50 dark:bg-yellow-950',
+      color: 'text-blue-500',
+      bgColor: 'bg-blue-50 dark:bg-blue-950',
       description: '≤ 7 dias para vencer',
+      gradient: 'from-blue-500 to-blue-600'
     },
     {
       title: 'Concluídas',
@@ -59,6 +62,7 @@ export default function Dashboard() {
       color: 'text-green-500',
       bgColor: 'bg-green-50 dark:bg-green-950',
       description: 'Obrigações finalizadas',
+      gradient: 'from-green-500 to-emerald-500'
     },
   ]
 
@@ -75,8 +79,10 @@ export default function Dashboard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+            Dashboard
+          </h1>
+          <p className="text-muted-foreground mt-1">
             Visão geral das obrigações fiscais
           </p>
         </div>
@@ -85,7 +91,10 @@ export default function Dashboard() {
             <Filter className="h-4 w-4 mr-2" />
             Filtros
           </Button>
-          <Button onClick={() => setModalOpen(true)}>
+          <Button 
+            onClick={() => setModalOpen(true)}
+            className="gradient-navy hover:shadow-lg hover:shadow-primary/25 transition-all duration-200"
+          >
             <Plus className="h-4 w-4 mr-2" />
             Nova Obrigação
           </Button>

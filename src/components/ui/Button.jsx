@@ -5,7 +5,7 @@ const Button = React.forwardRef(({ className, variant = 'default', size = 'defau
   return (
     <button
       className={cn(
-        'btn',
+        'btn hover-lift',
         {
           'btn-primary': variant === 'default',
           'btn-secondary': variant === 'secondary',

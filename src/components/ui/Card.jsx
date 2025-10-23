@@ -4,7 +4,7 @@ import { cn } from '../../utils/cn'
 const Card = React.forwardRef(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('card', className)}
+    className={cn('card hover-glow', className)}
     {...props}
   />
 ))

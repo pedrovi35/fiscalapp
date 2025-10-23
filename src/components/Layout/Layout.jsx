@@ -52,12 +52,13 @@ export default function Layout({ children }) {
               className="fixed left-0 top-0 h-full w-64 bg-card border-r"
             >
               <div className="flex h-full flex-col">
-                <div className="flex items-center justify-between p-4">
-                  <h1 className="text-xl font-bold text-primary">Sistema Fiscal</h1>
+                <div className="flex items-center justify-between p-4 gradient-navy">
+                  <h1 className="text-xl font-bold text-white">Sistema Fiscal</h1>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => setSidebarOpen(false)}
+                    className="text-white hover:bg-white/20"
                   >
                     <X className="h-5 w-5" />
                   </Button>
@@ -91,8 +92,8 @@ export default function Layout({ children }) {
       {/* Sidebar Desktop */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-64 lg:flex-col">
         <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-card border-r px-6 pb-4">
-          <div className="flex h-16 shrink-0 items-center">
-            <h1 className="text-xl font-bold text-primary">Sistema Fiscal</h1>
+          <div className="flex h-16 shrink-0 items-center gradient-navy">
+            <h1 className="text-xl font-bold text-white">Sistema Fiscal</h1>
           </div>
           <nav className="flex flex-1 flex-col">
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
