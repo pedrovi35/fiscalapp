@@ -16,9 +16,9 @@ import {
 } from 'lucide-react'
 import { useNotificacao } from '../contexts/NotificacaoContext'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/Card'
-import { Button } from '../ui/Button'
-import { Badge } from '../ui/Badge'
-import { Input } from '../ui/Input'
+import { Button } from '../components/ui/Button'
+import { Badge } from '../components/ui/Badge'
+import { Input } from '../components/ui/Input'
 import ParcelamentoModal from '../components/modals/ParcelamentoModal'
 
 export default function Parcelamentos() {

@@ -109,17 +109,17 @@ export default function Impostos() {
 
   const impostosFiltrados = impostos.filter(imposto => {
     const matchBusca = !filtros.busca || 
-      impostos.nome.toLowerCase().includes(filtros.busca.toLowerCase()) ||
-      impostos.codigo.toLowerCase().includes(filtros.busca.toLowerCase())
+      imposto.nome.toLowerCase().includes(filtros.busca.toLowerCase()) ||
+      imposto.codigo.toLowerCase().includes(filtros.busca.toLowerCase())
     
-    const matchTipo = !filtros.tipo || impostos.tipo === filtros.tipo
-    const matchStatus = !filtros.status || (filtros.status === 'ativo' ? impostos.ativo : !impostos.ativo)
+    const matchTipo = !filtros.tipo || imposto.tipo === filtros.tipo
+    const matchStatus = !filtros.status || (filtros.status === 'ativo' ? imposto.ativo : !imposto.ativo)
     
     return matchBusca && matchTipo && matchStatus
   })
 
   const handleEditar = (imposto) => {
-    iniciarEdicao('Imposto', impostos.id)
+    iniciarEdicao('Imposto', imposto.id)
     setImpostoEditando(imposto)
     setModalOpen(true)
   }
@@ -128,10 +128,10 @@ export default function Impostos() {
     if (impostoEditando) {
       // Atualizar imposto existente
       setImpostos(prev => prev.map(imp => 
-        imp.id === impostosEditando.id ? { ...imp, ...dadosImposto } : imp
+        imp.id === impostoEditando.id ? { ...imp, ...dadosImposto } : imp
       ))
       notificarMudanca('OBRIGACAO_ATUALIZADA', `Imposto ${dadosImposto.nome} atualizado com sucesso`)
-      finalizarEdicao('Imposto', impostosEditando.id)
+      finalizarEdicao('Imposto', impostoEditando.id)
     } else {
       // Criar novo imposto
       const novoImposto = {
@@ -149,9 +149,9 @@ export default function Impostos() {
   }
 
   const handleExcluir = (imposto) => {
-    if (window.confirm(`Tem certeza que deseja excluir o imposto ${impostos.nome}?`)) {
-      setImpostos(prev => prev.filter(imp => imp.id !== impostos.id))
-      notificarMudanca('OBRIGACAO_EXCLUIDA', `Imposto ${impostos.nome} excluído`)
+    if (window.confirm(`Tem certeza que deseja excluir o imposto ${imposto.nome}?`)) {
+      setImpostos(prev => prev.filter(imp => imp.id !== imposto.id))
+      notificarMudanca('OBRIGACAO_EXCLUIDA', `Imposto ${imposto.nome} excluído`)
     }
   }
 
@@ -240,7 +240,7 @@ export default function Impostos() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {impostosFiltrados.map((imposto, index) => (
           <motion.div
-            key={impostos.id}
+            key={imposto.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -250,48 +250,48 @@ export default function Impostos() {
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <CardTitle className="text-lg">{impostos.nome}</CardTitle>
+                    <CardTitle className="text-lg">{imposto.nome}</CardTitle>
                     <CardDescription className="mt-1">
-                      Código: {impostos.codigo}
+                      Código: {imposto.codigo}
                     </CardDescription>
                   </div>
-                  <Badge className={getTipoInfo(impostos.tipo).color}>
-                    {getTipoInfo(impostos.tipo).label}
+                  <Badge className={getTipoInfo(imposto.tipo).color}>
+                    {getTipoInfo(imposto.tipo).label}
                   </Badge>
                 </div>
               </CardHeader>
               
               <CardContent className="space-y-3">
                 <p className="text-sm text-muted-foreground line-clamp-2">
-                  {impostos.descricao}
+                  {imposto.descricao}
                 </p>
                 
                 <div className="flex items-center gap-2 text-sm">
                   <span className="text-muted-foreground">Recorrência:</span>
                   <span className="flex items-center gap-1">
-                    {getRecorrenciaInfo(impostos.tipoRecorrencia).icon}
-                    {getRecorrenciaInfo(impostos.tipoRecorrencia).label}
+                    {getRecorrenciaInfo(imposto.tipoRecorrencia).icon}
+                    {getRecorrenciaInfo(imposto.tipoRecorrencia).label}
                   </span>
                 </div>
                 
                 <div className="flex items-center gap-2 text-sm">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
-                  <span>Vencimento: dia {impostos.diaVencimento}</span>
+                  <span>Vencimento: dia {imposto.diaVencimento}</span>
                 </div>
                 
                 <div className="flex items-center gap-2 text-sm">
                   <Clock className="h-4 w-4 text-muted-foreground" />
-                  <span>Antecedência: {impostos.prazoAntecedenciaDias} dias</span>
+                  <span>Antecedência: {imposto.prazoAntecedenciaDias} dias</span>
                 </div>
                 
                 <div className="flex items-center gap-2 text-sm">
-                  {impostos.ajustarFinaisSemana && (
+                  {imposto.ajustarFinaisSemana && (
                     <Badge variant="outline" className="text-xs">
                       <Settings className="h-3 w-3 mr-1" />
                       Finais de semana
                     </Badge>
                   )}
-                  {impostos.ajustarFeriados && (
+                  {imposto.ajustarFeriados && (
                     <Badge variant="outline" className="text-xs">
                       <AlertCircle className="h-3 w-3 mr-1" />
                       Feriados
@@ -301,13 +301,13 @@ export default function Impostos() {
                 
                 <div className="flex items-center justify-between pt-2 border-t">
                   <div className="flex items-center gap-2">
-                    {impostos.ativo ? (
+                    {imposto.ativo ? (
                       <CheckCircle className="h-4 w-4 text-green-500" />
                     ) : (
                       <AlertCircle className="h-4 w-4 text-red-500" />
                     )}
                     <span className="text-sm text-muted-foreground">
-                      {impostos.ativo ? 'Ativo' : 'Inativo'}
+                      {imposto.ativo ? 'Ativo' : 'Inativo'}
                     </span>
                   </div>
                   
